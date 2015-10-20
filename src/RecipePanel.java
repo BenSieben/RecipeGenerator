@@ -11,28 +11,9 @@ public class RecipePanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        IngredientsPane ingredientsPane = new IngredientsPane();
-        this.add(ingredientsPane, BorderLayout.PAGE_START);
-
-        setVisible(true);
-
-        System.out.println(ingredientsPane);
+        RecipeTextArea ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
+        add(ingredientsTextArea, BorderLayout.PAGE_START);
+        System.out.println(ingredientsTextArea);
     }
 
-    private class IngredientsPane extends JScrollPane {
-
-        private JTextArea textArea;
-
-        public IngredientsPane() {
-            textArea = new JTextArea("Put ingredients here, with each entry separated by an enter space", 5, 20);
-            textArea.setEditable(true);
-            textArea.setLineWrap(true);
-            this.add(textArea);
-        }
-
-        public String toString() {
-            return textArea.getText();
-        }
-
-    }
 }

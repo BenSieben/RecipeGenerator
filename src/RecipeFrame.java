@@ -22,7 +22,7 @@ public class RecipeFrame extends JFrame implements WindowListener, MouseListener
         addMouseMotionListener(this);
 
         setJMenuBar(new RecipeMenuBar());
-        add(new TestPanel());
+        add(new RecipePanel());
 
         setVisible(true);
     }
