@@ -11,6 +11,10 @@ public class RecipePanel extends JPanel {
 
         setLayout(new BorderLayout());
 
+        RecipeTextField recipeTextField = new RecipeTextField("Recipe","Please write the recipe name here.");
+        add(recipeTextField, BorderLayout.NORTH);
+        System.out.println(recipeTextField);
+
         RecipeTextArea ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
         add(ingredientsTextArea, BorderLayout.WEST);
         System.out.println(ingredientsTextArea);

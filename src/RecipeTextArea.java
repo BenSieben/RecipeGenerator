@@ -4,7 +4,7 @@ import java.awt.*;
 /**
  * Class that defines the basic structure of all JTextAreas
  * that are needed for users to create recipes through the
- * program.
+ * program
  */
 public class RecipeTextArea extends JPanel{
 
