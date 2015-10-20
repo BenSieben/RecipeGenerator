@@ -14,6 +14,8 @@ public class TestPanel extends JPanel {
         JTextArea textArea = new JTextArea("Hello", 5, 20);
         textArea.setEditable(true);
         textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
         JScrollPane textAreaPane = new JScrollPane(textArea);
         this.add(textAreaPane, BorderLayout.PAGE_START);
     }
