@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- Class that will contain the JFrame that displays the program window
+ JFrame that will displays the Recipe Generator program window
  */
 public class RecipeFrame extends JFrame implements WindowListener, MouseListener, MouseMotionListener {
 
