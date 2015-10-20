@@ -1,0 +1,116 @@
+body {
+    background: #003434;
+}
+
+div {
+    display: block;
+    background: #194848;
+    margin: 2em 2em 2em 2em;
+}
+
+table, th, td {
+    border: 2px solid #DADADA;
+    padding: 1em;
+    border-collapse: collapse;
+    color: #FFFFFF;
+}
+
+table {
+    margin: 0px auto;
+}
+
+th {
+    font-size: 1.2em;
+    background-color: #55D5FF;
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #FFFFFF;
+    color: #55D5FF;
+}
+
+td {
+    font-size: 1em;
+}
+
+tbody tr{
+    background-color: #0CA3C2;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #398190;
+}
+
+td a {
+    color: #FFFFFF;
+}
+
+
+.textdiv {
+    //width: 9em;
+    //float: left;
+    //padding-right: 5em;
+}
+
+.imgdiv {
+    //width: 9em;
+    //float: right;
+    //padding-left: 5em;
+}
+
+.title {
+    color: #FFFFFF;
+    text-align: center;
+    background: #0d5f77;
+    margin: 0em 2em -1em 2em;
+    font-size: 2em;
+    font-family: sans-serif;
+}
+
+.subtitle {
+    text-align: left;
+    color: #FFFFFF;
+    font-size: 1.7em;
+    font-family: sans-serif;
+    background: #398190;
+}
+
+.list {
+    color: #FFFFFF;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+.recipeentry {
+    font-family: sans-serif;
+}
+
+.centerdiv {
+    text-align: center;
+    background: #0CA3C2;
+}
+
+#indexlink {
+    color: #DADADA;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#pcategory {
+    color: #DADADA;
+    text-align: center;
+    font-size: 1em;
+}
+
+#description {
+    color: #DADADA;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 1.2em;
+}
+
+#picture {
+    text-align: center;
+    color: #DADADA;
+}
