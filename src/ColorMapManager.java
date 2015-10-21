@@ -67,7 +67,9 @@ public class ColorMapManager {
                     UIManager.setLookAndFeel(info.getClassName());
 
                     // attempt to load the colors
-                    ColorMapReader.load(fileLocation, colorNameToColorMap);
+                    if (!fileLocation.equals("")) {
+                        ColorMapReader.load(fileLocation, colorNameToColorMap);
+                    }
 
                     setNimbusColors();
 
