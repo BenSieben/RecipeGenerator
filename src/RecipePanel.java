@@ -7,7 +7,7 @@ import java.awt.*;
 public class RecipePanel extends JPanel {
 
     public RecipePanel() {
-        this.setBackground(new Color(0, 52, 52));
+        //this.setBackground(new Color(0, 52, 52));
 
         setLayout(new BorderLayout());
 
@@ -22,6 +22,9 @@ public class RecipePanel extends JPanel {
         RecipeTextArea instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction with an enter space.");
         add(instructionsTextArea, BorderLayout.EAST);
         System.out.println(instructionsTextArea);
+
+        JTextArea a = new JTextArea("fdsa");
+        add(a, BorderLayout.CENTER);
     }
 
 }

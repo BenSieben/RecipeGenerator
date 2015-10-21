@@ -8,6 +8,10 @@ import java.awt.event.*;
 public class RecipeFrame extends JFrame implements WindowListener, MouseListener, MouseMotionListener {
 
     public RecipeFrame() {
+        //final String colorsLocation = "Data/Colors.xml";
+        //ColorMapManager.setup(colorsLocation);
+        ColorMapManager.refresh();
+
         setTitle("Recipe Generator");
         setBounds(100, 100, 700, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -25,6 +29,22 @@ public class RecipeFrame extends JFrame implements WindowListener, MouseListener
         add(new RecipePanel());
 
         setVisible(true);
+
+        // colors stuff
+        addWindowListener(new WindowAdapter() {
+            public void windowActivated(WindowEvent e) {
+                //ColorMapManager.refresh(colorsLocation);
+                refresh();
+                //SwingUtilities.updateComponentTreeUI(dropboxUpdater.getDialog());
+                //listarPanel.refreshTextColor();
+            }
+
+            public void windowClosing(WindowEvent e) {}
+        });
+    }
+
+    public void refresh() {
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     /**

@@ -27,18 +27,18 @@ public class RecipeTextArea extends JPanel{
         textArea.setEditable(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true); //Make line wrap go by words instead of by characters (the default)
-        textArea.setBackground(new Color(0, 52, 52));  //Set background color for the textArea
-        textArea.setForeground(new Color(255, 255, 255)); //Set font color for the textArea
-        textArea.setCaretColor(new Color(255, 255, 255)); //Set caret (i.e., text editing location indicator) color for the textArea
+        //textArea.setBackground(new Color(0, 52, 52));  //Set background color for the textArea
+        //textArea.setForeground(new Color(255, 255, 255)); //Set font color for the textArea
+        //textArea.setCaretColor(new Color(255, 255, 255)); //Set caret (i.e., text editing location indicator) color for the textArea
         textArea.setCaretPosition(textArea.getText().length()); //Make caret start at the end of the initial text
 
         scrollPane = new JScrollPane(textArea);
 
         label = new JLabel();
-        label.setOpaque(true); //Set the JLabel to be opaque since it is disabled by default
+        //label.setOpaque(true); //Set the JLabel to be opaque since it is disabled by default
         label.setText(labelText);
-        label.setBackground(new Color(0, 52, 52)); //Set background color for the label
-        label.setForeground(new Color(255, 255, 255)); //Set font color for the label
+        //label.setBackground(new Color(0, 52, 52)); //Set background color for the label
+        //label.setForeground(new Color(255, 255, 255)); //Set font color for the label
 
 
         setLayout(new BorderLayout());
