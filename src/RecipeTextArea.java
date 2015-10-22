@@ -20,10 +20,10 @@ public class RecipeTextArea extends JPanel{
     /**
      * Creates a new RecipeTextArea with specific values
      * @param labelText the text that will be put as a JLabel for the RecipeTextArea
-     * @param initialText the text that will initially be inside the JTextArea of the RecipeTextArea
+     * @param toolTipText the text that will initially be inside the JTextArea of the RecipeTextArea
      */
-    public RecipeTextArea(String labelText, String initialText) {
-        textArea = new JTextArea(initialText, 5, 20);
+    public RecipeTextArea(String labelText, String toolTipText) {
+        textArea = new JTextArea(5, 20);
         textArea.setEditable(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true); //Make line wrap go by words instead of by characters (the default)
@@ -31,6 +31,7 @@ public class RecipeTextArea extends JPanel{
         //textArea.setForeground(new Color(255, 255, 255)); //Set font color for the textArea
         //textArea.setCaretColor(new Color(255, 255, 255)); //Set caret (i.e., text editing location indicator) color for the textArea
         textArea.setCaretPosition(textArea.getText().length()); //Make caret start at the end of the initial text
+        textArea.setToolTipText(toolTipText); //Add a tool tip that instructs user on what goes in the text field
 
         scrollPane = new JScrollPane(textArea);
 
@@ -56,7 +57,6 @@ public class RecipeTextArea extends JPanel{
     public String toString() {
         String labelName = label.getText();
         String textAreaContents = textArea.getText();
-
         return (labelName + ": " + textAreaContents);
     }
 

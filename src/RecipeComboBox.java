@@ -13,7 +13,7 @@ public class RecipeComboBox extends JPanel {
     private JComboBox<String> comboBox;
     private String[] options;
 
-    public RecipeComboBox(String labelText, ArrayList<String> options) {
+    public RecipeComboBox(String labelText, ArrayList<String> options, String toolTipText) {
         label = new JLabel();
         label.setText(labelText);
 
@@ -21,6 +21,7 @@ public class RecipeComboBox extends JPanel {
 
         comboBox = new JComboBox<>(this.options);
         comboBox.setEditable(false);
+        comboBox.setToolTipText(toolTipText);
 
         setLayout(new BorderLayout());
 

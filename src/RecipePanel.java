@@ -23,7 +23,7 @@ public class RecipePanel extends JPanel {
         System.out.println(recipeTextField);
 
         ArrayList<String> categoryOptions = getCategoryOptions();
-        RecipeComboBox categoryComboBox = new RecipeComboBox("Category",categoryOptions);
+        RecipeComboBox categoryComboBox = new RecipeComboBox("Category",categoryOptions,"Please choose the most appropriate recipe category from this dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 1; //Put this Component at the second row
