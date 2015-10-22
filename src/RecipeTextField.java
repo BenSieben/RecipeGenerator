@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
@@ -36,9 +33,6 @@ public class RecipeTextField extends JPanel {
     }
 
     public String toString() {
-        String labelName = label.getText();
-        String textAreaContents = textField.getText();
-
-        return (labelName + ": " + textAreaContents);
+        return textField.getText();
     }
 }

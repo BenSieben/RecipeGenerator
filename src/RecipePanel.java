@@ -1,11 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
  * JPanel that holds all of the components of the recipe generator needed for user usage
  */
-public class RecipePanel extends JPanel {
+public class RecipePanel extends JPanel implements ActionListener {
+
+    private JButton testButton;
+    private RecipeTextField recipeTextField;
+    private RecipeComboBox categoryComboBox;
+    private RecipeTextArea ingredientsTextArea, instructionsTextArea;
 
     public RecipePanel() {
         //this.setBackground(new Color(0, 52, 52));
@@ -13,7 +20,7 @@ public class RecipePanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        RecipeTextField recipeTextField = new RecipeTextField("Recipe","Please write the recipe name here.");
+        recipeTextField = new RecipeTextField("Recipe","Please write the recipe name here.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 0; //Put this Component at the first row
@@ -23,7 +30,7 @@ public class RecipePanel extends JPanel {
         System.out.println(recipeTextField);
 
         ArrayList<String> categoryOptions = getCategoryOptions();
-        RecipeComboBox categoryComboBox = new RecipeComboBox("Category",categoryOptions,"Please choose the most appropriate recipe category from this dropdown.");
+        categoryComboBox = new RecipeComboBox("Category",categoryOptions,"Please choose the most appropriate recipe category from this dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 1; //Put this Component at the second row
@@ -33,7 +40,7 @@ public class RecipePanel extends JPanel {
         System.out.println(recipeTextField);
 
 
-        RecipeTextArea ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
+        ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 2; //Put this Component at the third row
@@ -42,7 +49,7 @@ public class RecipePanel extends JPanel {
         add(ingredientsTextArea, c);
         System.out.println(ingredientsTextArea);
 
-        RecipeTextArea instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction with an enter space.");
+        instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction with an enter space.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
         c.gridy = 2; //Put this Component at the third row
@@ -50,6 +57,16 @@ public class RecipePanel extends JPanel {
         c.weightx = 0.5; //Make the instructionsTextArea span half the horizontal space of the JPanel
         add(instructionsTextArea, c);
         System.out.println(instructionsTextArea);
+
+        testButton = new JButton("Test");
+        testButton.setActionCommand("Test");
+        testButton.addActionListener(this);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 4; //Put this Component at the fourth row
+        c.gridwidth = 1; // This Component is one cell wide
+        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
+        add(testButton, c);
     }
 
 
@@ -87,6 +104,23 @@ public class RecipePanel extends JPanel {
         categoryOptions.add("Stuffing");
         categoryOptions.add("Other");
         return categoryOptions;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if ("Test".equals(e.getActionCommand())) {
+            System.out.println("Test button pressed.");
+
+            //Making sure no | characters have been given as input for any part of the recipe
+            if(recipeTextField.toString().contains("|")) {
+                System.out.println("Illegal input | detected in recipe text field, please remove any | characters from your input.");
+            }
+            if(ingredientsTextArea.toString().contains("|")) {
+                System.out.println("Illegal input | detected in ingredients text area, please remove any | characters from your input.");
+            }
+            if(instructionsTextArea.toString().contains("|")) {
+                System.out.println("Illegal input | detected in instructions text area, please remove any | characters from your input.");
+            }
+        }
     }
 
 }

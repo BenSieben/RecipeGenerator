@@ -30,10 +30,10 @@ public class RecipeComboBox extends JPanel {
     }
 
     public String toString() {
-        String output = (label.getText() + "\n\r");
+        String output = "";
         for(String choice: options) {
-            output += (choice + "\n\r");
+            output += (choice + "|");
         }
-        return output;
+        return output.substring(output.length() - 1);
     }
 }

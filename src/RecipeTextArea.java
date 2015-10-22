@@ -11,12 +11,6 @@ public class RecipeTextArea extends JPanel{
     //Holds the JTextArea within this specific RecipeTextArea
     private JTextArea textArea;
 
-    //Holds the JScrollPane within this specific RecipeTextArea
-    private JScrollPane scrollPane;
-
-    //Holds the JLabel used to define this specific RecipeTextArea
-    private JLabel label;
-
     /**
      * Creates a new RecipeTextArea with specific values
      * @param labelText the text that will be put as a JLabel for the RecipeTextArea
@@ -33,9 +27,9 @@ public class RecipeTextArea extends JPanel{
         textArea.setCaretPosition(textArea.getText().length()); //Make caret start at the end of the initial text
         textArea.setToolTipText(toolTipText); //Add a tool tip that instructs user on what goes in the text field
 
-        scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane(textArea);
 
-        label = new JLabel();
+        JLabel label = new JLabel();
         //label.setOpaque(true); //Set the JLabel to be opaque since it is disabled by default
         label.setText(labelText);
         //label.setBackground(new Color(0, 52, 52)); //Set background color for the label
@@ -49,15 +43,13 @@ public class RecipeTextArea extends JPanel{
     }
 
     /**
-     * Returns the label of the RecipeTextArea and the contents within the textArea
+     * Returns the contents within the textArea
      * of the RecipeTextArea
-     * @return the label of the RecipeTextArea and the contents within the textArea
+     * @return the contents within the textArea
      * of the RecipeTextArea
      */
     public String toString() {
-        String labelName = label.getText();
-        String textAreaContents = textArea.getText();
-        return (labelName + ": " + textAreaContents);
+        return textArea.getText();
     }
 
 }
