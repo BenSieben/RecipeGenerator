@@ -36,4 +36,13 @@ public class RecipeComboBox extends JPanel {
         }
         return output.substring(output.length() - 1);
     }
+
+    /**
+     * Sets the RecipeComboBox to choose the entry in the
+     * RecipeComboBox that equals the given selectionText
+     * @param selectionText the text to make the RecipeComboBox select
+     */
+    public void setSelectedItem(String selectionText) {
+        comboBox.setSelectedItem(selectionText);
+    }
 }

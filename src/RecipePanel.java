@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class RecipePanel extends JPanel implements ActionListener {
 
-    private JButton testButton;
+    private JButton testButton, saveButton, loadButton;
     private RecipeTextField recipeTextField;
     private RecipeComboBox categoryComboBox;
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
@@ -63,10 +63,30 @@ public class RecipePanel extends JPanel implements ActionListener {
         testButton.addActionListener(this);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
-        c.gridy = 4; //Put this Component at the fourth row
+        c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; // This Component is one cell wide
         c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
         add(testButton, c);
+
+        saveButton = new JButton("Save Recipe");
+        saveButton.setActionCommand("Save");
+        saveButton.addActionListener(this);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 4; //Put this Component at the fifth row
+        c.gridwidth = 1; // This Component is one cell wide
+        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
+        add(saveButton, c);
+
+        loadButton = new JButton("Load Recipe");
+        loadButton.setActionCommand("Load");
+        testButton.addActionListener(this);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1; //Put this Component at the second column
+        c.gridy = 4; //Put this Component at the fourth row
+        c.gridwidth = 1; // This Component is one cell wide
+        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
+        add(loadButton, c);
     }
 
 

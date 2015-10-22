@@ -52,4 +52,13 @@ public class RecipeTextArea extends JPanel{
         return textArea.getText();
     }
 
+    /**
+     * Set the text in the RecipeTextArea to match
+     * the input String
+     * @param text the text to place in the RecipeTextArea
+     */
+    public void setText(String text) {
+        textArea.setText(text);
+    }
+
 }

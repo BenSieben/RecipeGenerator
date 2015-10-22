@@ -35,4 +35,13 @@ public class RecipeTextField extends JPanel {
     public String toString() {
         return textField.getText();
     }
+
+    /**
+     * Changes the text in the RecipeTextField to
+     * the input String
+     * @param text the String to put in the RecipeTextField
+     */
+    public void setText(String text) {
+        textField.setText(text);
+    }
 }
