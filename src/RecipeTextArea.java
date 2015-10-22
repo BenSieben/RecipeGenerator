@@ -17,7 +17,7 @@ public class RecipeTextArea extends JPanel{
      * @param toolTipText the text that will initially be inside the JTextArea of the RecipeTextArea
      */
     public RecipeTextArea(String labelText, String toolTipText) {
-        textArea = new JTextArea(5, 20);
+        textArea = new JTextArea(10, 20);
         textArea.setEditable(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true); //Make line wrap go by words instead of by characters (the default)

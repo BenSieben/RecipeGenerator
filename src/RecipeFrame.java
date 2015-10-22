@@ -23,7 +23,7 @@ public class RecipeFrame extends JFrame implements WindowListener, MouseListener
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        setJMenuBar(new RecipeMenuBar());
+        //setJMenuBar(new RecipeMenuBar()); Currently there is no need for a JMenuBar
         add(new RecipePanel());
 
         setVisible(true);

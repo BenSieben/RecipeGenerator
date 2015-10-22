@@ -9,10 +9,11 @@ import java.util.ArrayList;
  */
 public class RecipePanel extends JPanel implements ActionListener {
 
-    private JButton testButton, saveButton, loadButton;
+    private JButton testButton, saveButton, loadButton, deleteButton, openIndexButton;
     private RecipeTextField recipeTextField;
     private RecipeComboBox categoryComboBox;
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
+    private RecipeDataManager manager;
 
     public RecipePanel() {
         //this.setBackground(new Color(0, 52, 52));
@@ -58,35 +59,43 @@ public class RecipePanel extends JPanel implements ActionListener {
         add(instructionsTextArea, c);
         System.out.println(instructionsTextArea);
 
-        testButton = new JButton("Test");
-        testButton.setActionCommand("Test");
-        testButton.addActionListener(this);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0; //Put this Component at the first column
-        c.gridy = 3; //Put this Component at the fourth row
-        c.gridwidth = 1; // This Component is one cell wide
-        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
-        add(testButton, c);
+        manager = new RecipeDataManager(recipeTextField, categoryComboBox, ingredientsTextArea, instructionsTextArea);
 
         saveButton = new JButton("Save Recipe");
         saveButton.setActionCommand("Save");
         saveButton.addActionListener(this);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
-        c.gridy = 4; //Put this Component at the fifth row
+        c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; // This Component is one cell wide
-        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
         add(saveButton, c);
 
         loadButton = new JButton("Load Recipe");
         loadButton.setActionCommand("Load");
-        testButton.addActionListener(this);
+        loadButton.addActionListener(this);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
-        c.gridy = 4; //Put this Component at the fourth row
+        c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; // This Component is one cell wide
-        c.weightx = 0.25; //Make the instructionsTextArea span 1/4 the horizontal space of the JPanel
         add(loadButton, c);
+
+        deleteButton = new JButton("Delete Recipe");
+        deleteButton.setActionCommand("Delete");
+        deleteButton.addActionListener(this);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 4; //Put this Component at the fifth row
+        c.gridwidth = 1; // This Component is one cell wide
+        add(deleteButton, c);
+
+        openIndexButton = new JButton("Open the Recipe Index Page");
+        openIndexButton.setActionCommand("OpenIndex");
+        openIndexButton.addActionListener(this);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1; //Put this Component at the second column
+        c.gridy = 4; //Put this Component at the fifth row
+        c.gridwidth = 1; // This Component is one cell wide
+        add(openIndexButton, c);
     }
 
 
@@ -127,10 +136,11 @@ public class RecipePanel extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if ("Test".equals(e.getActionCommand())) {
-            System.out.println("Test button pressed.");
+        if("Save".equals(e.getActionCommand())) { //Save button was pressed
+            System.out.println("Save button pressed");
 
-            //Making sure no | characters have been given as input for any part of the recipe
+            //Making sure no | characters have been given as input for any part of the recipe,
+            //as they would break the saving method implemented by this program
             if(recipeTextField.toString().contains("|")) {
                 System.out.println("Illegal input | detected in recipe text field, please remove any | characters from your input.");
             }
@@ -140,6 +150,16 @@ public class RecipePanel extends JPanel implements ActionListener {
             if(instructionsTextArea.toString().contains("|")) {
                 System.out.println("Illegal input | detected in instructions text area, please remove any | characters from your input.");
             }
+        }
+        else if("Load".equals(e.getActionCommand())) { //Load button was pressed
+            System.out.println("Load button pressed");
+        }
+        else if("Delete".equals(e.getActionCommand())) { //Delete button was pressed
+            System.out.println("Delete button pressed");
+        }
+        else if("OpenIndex".equals(e.getActionCommand())) { //OpenIndex button was pressed
+            System.out.println("OpenIndex button pressed");
+            manager.openIndex();
         }
     }
 
