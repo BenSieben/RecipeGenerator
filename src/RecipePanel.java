@@ -9,10 +9,11 @@ import java.util.ArrayList;
  */
 public class RecipePanel extends JPanel implements ActionListener {
 
-    private JButton testButton, saveButton, loadButton, deleteButton, openIndexButton;
+    private JButton saveButton, loadButton, deleteButton, openIndexButton;
     private RecipeTextField recipeTextField;
-    private RecipeComboBox categoryComboBox;
+    private RecipeComboBox categoryComboBox, recipesComboBox;
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
+    private RecipeStatusBar statusBar;
     private RecipeDataManager manager;
 
     public RecipePanel() {
@@ -38,8 +39,6 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.gridwidth = 2; //This Component is two cells wide
         c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
         add(categoryComboBox, c);
-        System.out.println(recipeTextField);
-
 
         ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -59,43 +58,65 @@ public class RecipePanel extends JPanel implements ActionListener {
         add(instructionsTextArea, c);
         System.out.println(instructionsTextArea);
 
-        manager = new RecipeDataManager(recipeTextField, categoryComboBox, ingredientsTextArea, instructionsTextArea);
+        manager = new RecipeDataManager();
 
-        saveButton = new JButton("Save Recipe");
-        saveButton.setActionCommand("Save");
-        saveButton.addActionListener(this);
+        openIndexButton = new JButton("Open the Recipe Index Page");
+        openIndexButton.setActionCommand("OpenIndex");
+        openIndexButton.addActionListener(this);
+        openIndexButton.setToolTipText("Open up the Recipe Index HTML Page with the default program.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; // This Component is one cell wide
+        add(openIndexButton, c);
+
+        saveButton = new JButton("Save Recipe");
+        saveButton.setActionCommand("Save");
+        saveButton.addActionListener(this);
+        saveButton.setToolTipText("Save the current recipe name / category / ingredients / instructions as a recipe.");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1; //Put this Component at the second column
+        c.gridy = 3; //Put this Component at the fourth row
+        c.gridwidth = 1; // This Component is one cell wide
         add(saveButton, c);
+
+        ArrayList<String> createdRecipes = new ArrayList<>();
+        createdRecipes.add("Select a Recipe to Load or Delete");
+        recipesComboBox = new RecipeComboBox("Select Created Recipe",createdRecipes,"Select a recipe to load or delete from this dropdown.");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 4; //Put this Component at the fifth row
+        c.gridwidth = 2; //This Component is two cells wide
+        c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
+        add(recipesComboBox, c);
 
         loadButton = new JButton("Load Recipe");
         loadButton.setActionCommand("Load");
         loadButton.addActionListener(this);
+        loadButton.setToolTipText("Load the recipe currently selected in the \"Select Created Recipe\" dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1; //Put this Component at the second column
-        c.gridy = 3; //Put this Component at the fourth row
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 5; //Put this Component at the sixth row
         c.gridwidth = 1; // This Component is one cell wide
         add(loadButton, c);
 
         deleteButton = new JButton("Delete Recipe");
         deleteButton.setActionCommand("Delete");
         deleteButton.addActionListener(this);
+        deleteButton.setToolTipText("Delete the recipe currently selected in the \"Select Created Recipe\" dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0; //Put this Component at the first column
-        c.gridy = 4; //Put this Component at the fifth row
+        c.gridx = 1; //Put this Component at the second column
+        c.gridy = 5; //Put this Component at the sixth row
         c.gridwidth = 1; // This Component is one cell wide
         add(deleteButton, c);
 
-        openIndexButton = new JButton("Open the Recipe Index Page");
-        openIndexButton.setActionCommand("OpenIndex");
-        openIndexButton.addActionListener(this);
+        statusBar = new RecipeStatusBar("Recipe Generator");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1; //Put this Component at the second column
-        c.gridy = 4; //Put this Component at the fifth row
-        c.gridwidth = 1; // This Component is one cell wide
-        add(openIndexButton, c);
+        c.gridx = 0; //Put this Component at the second column
+        c.gridy = 6; //Put this Component at the seventh row
+        c.gridwidth = 2; // This Component is one cell wide
+        c.weightx = 1;
+        add(statusBar, c);
     }
 
 
@@ -137,29 +158,67 @@ public class RecipePanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if("Save".equals(e.getActionCommand())) { //Save button was pressed
-            System.out.println("Save button pressed");
+            statusBar.setMessageColor(Color.WHITE);
+            statusBar.setMessage("Save button pressed");
 
             //Making sure no | characters have been given as input for any part of the recipe,
             //as they would break the saving method implemented by this program
             if(recipeTextField.toString().contains("|")) {
-                System.out.println("Illegal input | detected in recipe text field, please remove any | characters from your input.");
+                statusBar.setMessageColor(Color.RED);
+                statusBar.setMessage("Illegal input | detected in recipe text field, please remove any | characters from your input to save.");
             }
-            if(ingredientsTextArea.toString().contains("|")) {
-                System.out.println("Illegal input | detected in ingredients text area, please remove any | characters from your input.");
+            else if(ingredientsTextArea.toString().contains("|")) {
+                statusBar.setMessageColor(Color.RED);
+                statusBar.setMessage("Illegal input | detected in ingredients text area, please remove any | characters from your input to save.");
             }
-            if(instructionsTextArea.toString().contains("|")) {
-                System.out.println("Illegal input | detected in instructions text area, please remove any | characters from your input.");
+            else if(instructionsTextArea.toString().contains("|")) {
+                statusBar.setMessageColor(Color.RED);
+                statusBar.setMessage("Illegal input | detected in instructions text area, please remove any | characters from your input to save.");
+            }
+            else { //No | characters present, so we can save
+                String recipeName = recipeTextField.toString();
+
+                String categoryName = categoryComboBox.getSelectedItem();
+
+                ArrayList<String> ingredients = manager.splitList(ingredientsTextArea.toString());
+
+                ArrayList<String> instructions = manager.splitList(instructionsTextArea.toString());
+
+                Recipe recipe = new Recipe(recipeName, categoryName, ingredients, instructions);
+                System.out.println(recipe);
+                manager.save(recipe);
             }
         }
         else if("Load".equals(e.getActionCommand())) { //Load button was pressed
-            System.out.println("Load button pressed");
+
+            //Make sure that a recipe has been selected for loading
+            if(recipesComboBox.getSelectedIndex() == 0) {
+                statusBar.setMessageColor(Color.RED);
+                statusBar.setMessage("Please choose a recipe to load from the \"Select Created Recipe\" dropdown.");
+            }
+            else {
+                statusBar.setMessageColor(Color.WHITE);
+                statusBar.setMessage("Load button pressed");
+                manager.load(recipesComboBox.getSelectedIndex());
+            }
         }
         else if("Delete".equals(e.getActionCommand())) { //Delete button was pressed
-            System.out.println("Delete button pressed");
+
+            //Make sure that a recipe has been selected for deletion
+            if(recipesComboBox.getSelectedIndex() == 0) {
+                statusBar.setMessageColor(Color.RED);
+                statusBar.setMessage("Please choose a recipe to delete from the \"Select Created Recipe\" dropdown.");
+            }
+            else {
+                statusBar.setMessageColor(Color.WHITE);
+                statusBar.setMessage("Delete button pressed");
+                manager.delete(recipesComboBox.getSelectedIndex());
+            }
         }
         else if("OpenIndex".equals(e.getActionCommand())) { //OpenIndex button was pressed
-            System.out.println("OpenIndex button pressed");
-            manager.openIndex();
+            statusBar.setMessageColor(Color.WHITE);
+            statusBar.setMessage("Opening Recipe Index...");
+            manager.openIndex(statusBar);
         }
     }
 

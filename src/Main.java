@@ -60,15 +60,4 @@ public class Main {
             System.out.println(instruction);
         }
     }
-
-    private static void openFile(String filename) {
-        File f = new File(filename);
-        Desktop desktop = Desktop.getDesktop();
-        try {
-            desktop.open(f);
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }

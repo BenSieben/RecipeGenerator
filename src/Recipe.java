@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 /**
  * Class that stores all the information about a recipe.
- * Also contains the saving / loading of recipes.
  */
 public class Recipe {
 
@@ -14,30 +13,6 @@ public class Recipe {
         recipeCategory = category;
         recipeIngredients = ingredients;
         recipeInstructions = instructions;
-    }
-
-    /**
-     * Attempt to save the calling recipe
-     */
-    public void save() {
-        saveRecipe(this);
-    }
-
-    /**
-     * Attempt to save the given Recipe
-     * @param r the Recipe that needs to be saved
-     */
-    public static void saveRecipe(Recipe r) {
-
-    }
-
-    /**
-     * Attempt to load a recipe from the recipe list
-     * @param name the name of the recipe
-     * @return the Recipe file if it is found, or else null if the Recipe was not found
-     */
-    public static Recipe loadRecipe(String name) {
-        return null;
     }
 
     /**
@@ -57,4 +32,35 @@ public class Recipe {
         return s;
     }
 
+    /**
+     * Returns the name of the Recipe
+     * @return the name of the Recipe
+     */
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    /**
+     * Returns the category of the Recipe
+     * @return the category of the Recipe
+     */
+    public String getRecipeCategory() {
+        return recipeCategory;
+    }
+
+    /**
+     * Returns the array list of ingredients for the Recipe
+     * @return the array list of ingredients for the Recipe
+     */
+    public ArrayList<String> getRecipeIngredients() {
+        return recipeIngredients;
+    }
+
+    /**
+     * Returns the array list of the instructions for the Recipe
+     * @return the array list of the instructions for the Recipe
+     */
+    public ArrayList<String> getRecipeInstructions() {
+        return recipeIngredients;
+    }
 }

@@ -13,6 +13,13 @@ public class RecipeComboBox extends JPanel {
     private JComboBox<String> comboBox;
     private String[] options;
 
+    /**
+     * Creates a new RecipeComboBox, which creates a dropdown
+     * for users to make a selection from a set of choices
+     * @param labelText the descriptive label to give to the RecipeComboBox
+     * @param options the array list of options the user can choose
+     * @param toolTipText the text that shows up when the user hovers their mouse over the RecipeComboBox
+     */
     public RecipeComboBox(String labelText, ArrayList<String> options, String toolTipText) {
         label = new JLabel();
         label.setText(labelText);
@@ -22,7 +29,6 @@ public class RecipeComboBox extends JPanel {
         comboBox = new JComboBox<>(this.options);
         comboBox.setEditable(false);
         comboBox.setToolTipText(toolTipText);
-
         setLayout(new BorderLayout());
 
         add(label, BorderLayout.WEST);
@@ -44,5 +50,21 @@ public class RecipeComboBox extends JPanel {
      */
     public void setSelectedItem(String selectionText) {
         comboBox.setSelectedItem(selectionText);
+    }
+
+    /**
+     * Returns the current selection index of the RecipeComboBox
+     * @return the current selection index of the RecipeComboBox
+     */
+    public int getSelectedIndex() {
+        return comboBox.getSelectedIndex();
+    }
+
+    /**
+     * Returns the currently selected item of the RecipeComboBox
+     * @return the currently selected item of the RecipeComboBox
+     */
+    public String getSelectedItem() {
+        return (String)comboBox.getSelectedItem();
     }
 }
