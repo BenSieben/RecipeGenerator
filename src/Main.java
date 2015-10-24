@@ -14,6 +14,7 @@ public class Main {
 
         String recipeName = "Pea Soup";
         String category = "Appetizer";
+        String description = "A mash-potato like composition of pea soup with ham";
         ArrayList<String> ingredients = new ArrayList<>();
         ingredients.add("2 cups water");
         ingredients.add("1 lb. peas");
@@ -22,7 +23,7 @@ public class Main {
         instructions.add("Add peas to water in pot");
         instructions.add("Warm up peas and water");
         instructions.add("Add pepper");
-        Recipe r = new Recipe(recipeName, category, ingredients, instructions);
+        Recipe r = new Recipe(recipeName, category, description, ingredients, instructions);
 
         String s = r.toString();
         System.out.println(s);

@@ -5,12 +5,13 @@ import java.util.ArrayList;
  */
 public class Recipe {
 
-    private String recipeName, recipeCategory;
+    private String recipeName, recipeCategory, recipeDescription;
     private ArrayList<String> recipeIngredients, recipeInstructions;
 
-    public Recipe(String name, String category, ArrayList<String> ingredients, ArrayList<String> instructions) {
+    public Recipe(String name, String category, String description, ArrayList<String> ingredients, ArrayList<String> instructions) {
         recipeName = name;
         recipeCategory = category;
+        recipeDescription = description;
         recipeIngredients = ingredients;
         recipeInstructions = instructions;
     }
@@ -20,7 +21,7 @@ public class Recipe {
      * @return all the information about the current recipe
      */
     public String toString() {
-        String s = (recipeName + "||" + recipeCategory + "||");
+        String s = (recipeName + "||" + recipeCategory + "||" + recipeDescription + "||");
         for(String ingredient : recipeIngredients) {
             s += (ingredient + "|");
         }
@@ -49,6 +50,14 @@ public class Recipe {
     }
 
     /**
+     * Returns the description of the Recipe
+     * @return the description of the Recipe
+     */
+    public String getRecipeDescription() {
+        return recipeDescription;
+    }
+
+    /**
      * Returns the array list of ingredients for the Recipe
      * @return the array list of ingredients for the Recipe
      */
@@ -61,6 +70,6 @@ public class Recipe {
      * @return the array list of the instructions for the Recipe
      */
     public ArrayList<String> getRecipeInstructions() {
-        return recipeIngredients;
+        return recipeInstructions;
     }
 }

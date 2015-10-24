@@ -11,8 +11,7 @@ import java.util.TreeMap;
 public class RecipePanel extends JPanel implements ActionListener {
 
     private RecipeDataManager manager;
-    private JButton saveButton, loadButton, deleteButton, openIndexButton;
-    private RecipeTextField recipeTextField;
+    private RecipeTextField recipeTextField, descriptionTextField;
     private RecipeComboBox categoryComboBox, recipesComboBox;
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
     private RecipeStatusBar statusBar;
@@ -21,7 +20,6 @@ public class RecipePanel extends JPanel implements ActionListener {
         //this.setBackground(new Color(0, 52, 52));
 
         manager = new RecipeDataManager();
-        //TODO Load recipe list from save file
         loadRecipeList(); //Loads the last saved recipe list to the recipesComboBox
 
         setLayout(new GridBagLayout());
@@ -45,10 +43,19 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
         add(categoryComboBox, c);
 
-        ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient on a new line.");
+        descriptionTextField = new RecipeTextField("Description","Please write a simple sentence describing the recipe here.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 2; //Put this Component at the third row
+        c.gridwidth = 2; //This Component is two cells wide
+        c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
+        add(descriptionTextField, c);
+        System.out.println(descriptionTextField);
+
+        ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient on a new line.");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0; //Put this Component at the first column
+        c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; //This Component is one cell wide
         c.weightx = 0.5; //Make the ingredientsTextArea span half the horizontal space of the JPanel
         add(ingredientsTextArea, c);
@@ -57,63 +64,64 @@ public class RecipePanel extends JPanel implements ActionListener {
         instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction on a new line.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
-        c.gridy = 2; //Put this Component at the third row
+        c.gridy = 3; //Put this Component at the fourth row
         c.gridwidth = 1; // This Component is one cell wide
         c.weightx = 0.5; //Make the instructionsTextArea span half the horizontal space of the JPanel
         add(instructionsTextArea, c);
         System.out.println(instructionsTextArea);
 
-        openIndexButton = new JButton("Open the Recipe Index Page");
+        JButton openIndexButton = new JButton("Open the Recipe Index Page");
         openIndexButton.setActionCommand("OpenIndex");
         openIndexButton.addActionListener(this);
         openIndexButton.setToolTipText("Open up the Recipe Index HTML Page with the default program.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
-        c.gridy = 3; //Put this Component at the fourth row
+        c.gridy = 4; //Put this Component at the fifth row
         c.gridwidth = 1; // This Component is one cell wide
         add(openIndexButton, c);
 
-        saveButton = new JButton("Save Recipe");
+        JButton saveButton = new JButton("Save Recipe");
         saveButton.setActionCommand("Save");
         saveButton.addActionListener(this);
         saveButton.setToolTipText("Save the current recipe name / category / ingredients / instructions as a recipe.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
-        c.gridy = 3; //Put this Component at the fourth row
+        c.gridy = 4; //Put this Component at the fifth row
         c.gridwidth = 1; // This Component is one cell wide
         add(saveButton, c);
 
+        //This sections sets up the recipesComboBox Component
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
-        c.gridy = 4; //Put this Component at the fifth row
+        c.gridy = 5; //Put this Component at the sixth row
         c.gridwidth = 2; //This Component is two cells wide
         c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
         add(recipesComboBox, c);
 
-        loadButton = new JButton("Load Selected Recipe");
+        JButton loadButton = new JButton("Load Selected Recipe");
         loadButton.setActionCommand("Load");
         loadButton.addActionListener(this);
         loadButton.setToolTipText("Load the recipe currently selected in the \"Select Created Recipe\" dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
-        c.gridy = 5; //Put this Component at the sixth row
+        c.gridy = 6; //Put this Component at the seventh row
         c.gridwidth = 1; // This Component is one cell wide
         add(loadButton, c);
 
-        deleteButton = new JButton("Delete Selected Recipe");
+        JButton deleteButton = new JButton("Delete Selected Recipe");
         deleteButton.setActionCommand("Delete");
         deleteButton.addActionListener(this);
         deleteButton.setToolTipText("Delete the recipe currently selected in the \"Select Created Recipe\" dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
-        c.gridy = 5; //Put this Component at the sixth row
+        c.gridy = 6; //Put this Component at the seventh row
         c.gridwidth = 1; // This Component is one cell wide
         add(deleteButton, c);
 
         statusBar = new RecipeStatusBar("Recipe Generator");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the second column
-        c.gridy = 6; //Put this Component at the seventh row
+        c.gridy = 7; //Put this Component at the eighth row
         c.gridwidth = 2; // This Component is one cell wide
         c.weightx = 1;
         add(statusBar, c);
@@ -166,12 +174,14 @@ public class RecipePanel extends JPanel implements ActionListener {
            if(inputPassesCheck()) { //No illegal characters present, so we can save
                 String recipeName = recipeTextField.toString();
                 String categoryName = categoryComboBox.getSelectedItem();
+                String description = descriptionTextField.toString();
                 ArrayList<String> ingredients = manager.splitString(ingredientsTextArea.toString());
                 ArrayList<String> instructions = manager.splitString(instructionsTextArea.toString());
 
-                Recipe recipe = new Recipe(recipeName, categoryName, ingredients, instructions);
+                Recipe recipe = new Recipe(recipeName, categoryName, description, ingredients, instructions);
                 System.out.println(recipe);
                 manager.saveRecipe(recipe);
+               updateRecipeList(); //Need to update the recipe list with the recipe that was just saved
             }
         }
         else if("Load".equals(e.getActionCommand())) { //Load button was pressed
@@ -184,7 +194,7 @@ public class RecipePanel extends JPanel implements ActionListener {
             else {
                 statusBar.setMessageColor(Color.WHITE);
                 statusBar.setMessage("Load button pressed");
-                manager.loadRecipe(recipesComboBox.getSelectedItem());
+                manager.loadRecipe(recipesComboBox.getSelectedItem(), recipeTextField, recipesComboBox, descriptionTextField, ingredientsTextArea, instructionsTextArea);
             }
 
             manager.loadRecipeList();
@@ -219,6 +229,11 @@ public class RecipePanel extends JPanel implements ActionListener {
             statusBar.setMessage("Illegal input (|, \\, /, :, *, ?, \", <, and/or >) detected in recipe text field, please remove any of these characters from your input to save.");
             return false;
         }
+        else if(descriptionTextField.toString().contains("|")) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("Illegal input | detected in description text field, please remove any | characters from your description to save.");
+            return false;
+        }
         else if(ingredientsTextArea.toString().contains("|")) {
             statusBar.setMessageColor(Color.RED);
             statusBar.setMessage("Illegal input | detected in ingredients text area, please remove any | characters from your input to save.");
@@ -232,6 +247,11 @@ public class RecipePanel extends JPanel implements ActionListener {
         else if(recipeTextField.toString().trim().length() == 0) {
             statusBar.setMessageColor(Color.RED);
             statusBar.setMessage("The recipe name must have at least one character to save the recipe.");
+            return false;
+        }
+        else if(descriptionTextField.toString().trim().length() == 0) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("The recipe description must have at least one character to save the recipe.");
             return false;
         }
         else if(ingredientsTextArea.toString().trim().length() == 0) {
@@ -250,6 +270,12 @@ public class RecipePanel extends JPanel implements ActionListener {
     //Loads the recipe list for users to look through their created recipes
     private void loadRecipeList() {
         TreeMap<String, Recipe> recipeList = manager.loadRecipeList();
+        recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
+    }
+
+    //Updates the recipe list for users to look through their created recipes
+    private void updateRecipeList() {
+        TreeMap<String, Recipe> recipeList = manager.getRecipeList();
         recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
     }
 
