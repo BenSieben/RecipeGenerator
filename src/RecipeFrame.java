@@ -11,7 +11,7 @@ public class RecipeFrame extends JFrame implements WindowListener, MouseListener
         ColorMapManager.refresh();
 
         setTitle("Recipe Generator");
-        setBounds(100, 100, 700, 500);
+        setBounds(100, 100, 800, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("favicon.png").getImage());
         setLayout(new BorderLayout());

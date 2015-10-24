@@ -3,21 +3,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * JPanel that holds all of the components of the recipe generator needed for user usage
  */
 public class RecipePanel extends JPanel implements ActionListener {
 
+    private RecipeDataManager manager;
     private JButton saveButton, loadButton, deleteButton, openIndexButton;
     private RecipeTextField recipeTextField;
     private RecipeComboBox categoryComboBox, recipesComboBox;
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
     private RecipeStatusBar statusBar;
-    private RecipeDataManager manager;
 
     public RecipePanel() {
         //this.setBackground(new Color(0, 52, 52));
+
+        manager = new RecipeDataManager();
+        //TODO Load recipe list from save file
+        loadRecipeList(); //Loads the last saved recipe list to the recipesComboBox
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -40,7 +45,7 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
         add(categoryComboBox, c);
 
-        ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient with an enter space.");
+        ingredientsTextArea = new RecipeTextArea("Ingredients","Please list ingredients here, separating each ingredient on a new line.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 2; //Put this Component at the third row
@@ -49,7 +54,7 @@ public class RecipePanel extends JPanel implements ActionListener {
         add(ingredientsTextArea, c);
         System.out.println(ingredientsTextArea);
 
-        instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction with an enter space.");
+        instructionsTextArea = new RecipeTextArea("Instructions","Please list instructions here, separating each instruction on a new line.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1; //Put this Component at the second column
         c.gridy = 2; //Put this Component at the third row
@@ -57,8 +62,6 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.weightx = 0.5; //Make the instructionsTextArea span half the horizontal space of the JPanel
         add(instructionsTextArea, c);
         System.out.println(instructionsTextArea);
-
-        manager = new RecipeDataManager();
 
         openIndexButton = new JButton("Open the Recipe Index Page");
         openIndexButton.setActionCommand("OpenIndex");
@@ -80,9 +83,6 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.gridwidth = 1; // This Component is one cell wide
         add(saveButton, c);
 
-        ArrayList<String> createdRecipes = new ArrayList<>();
-        createdRecipes.add("Select a Recipe to Load or Delete");
-        recipesComboBox = new RecipeComboBox("Select Created Recipe",createdRecipes,"Select a recipe to load or delete from this dropdown.");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0; //Put this Component at the first column
         c.gridy = 4; //Put this Component at the fifth row
@@ -90,7 +90,7 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.weightx = 1; //Make the recipeTextField span the entire horizontal space of the JPanel
         add(recipesComboBox, c);
 
-        loadButton = new JButton("Load Recipe");
+        loadButton = new JButton("Load Selected Recipe");
         loadButton.setActionCommand("Load");
         loadButton.addActionListener(this);
         loadButton.setToolTipText("Load the recipe currently selected in the \"Select Created Recipe\" dropdown.");
@@ -100,7 +100,7 @@ public class RecipePanel extends JPanel implements ActionListener {
         c.gridwidth = 1; // This Component is one cell wide
         add(loadButton, c);
 
-        deleteButton = new JButton("Delete Recipe");
+        deleteButton = new JButton("Delete Selected Recipe");
         deleteButton.setActionCommand("Delete");
         deleteButton.addActionListener(this);
         deleteButton.setToolTipText("Delete the recipe currently selected in the \"Select Created Recipe\" dropdown.");
@@ -161,32 +161,17 @@ public class RecipePanel extends JPanel implements ActionListener {
             statusBar.setMessageColor(Color.WHITE);
             statusBar.setMessage("Save button pressed");
 
-            //Making sure no | characters have been given as input for any part of the recipe,
+            //Making sure no illegal characters have been given as input for any part of the recipe,
             //as they would break the saving method implemented by this program
-            if(recipeTextField.toString().contains("|")) {
-                statusBar.setMessageColor(Color.RED);
-                statusBar.setMessage("Illegal input | detected in recipe text field, please remove any | characters from your input to save.");
-            }
-            else if(ingredientsTextArea.toString().contains("|")) {
-                statusBar.setMessageColor(Color.RED);
-                statusBar.setMessage("Illegal input | detected in ingredients text area, please remove any | characters from your input to save.");
-            }
-            else if(instructionsTextArea.toString().contains("|")) {
-                statusBar.setMessageColor(Color.RED);
-                statusBar.setMessage("Illegal input | detected in instructions text area, please remove any | characters from your input to save.");
-            }
-            else { //No | characters present, so we can save
+           if(inputPassesCheck()) { //No illegal characters present, so we can save
                 String recipeName = recipeTextField.toString();
-
                 String categoryName = categoryComboBox.getSelectedItem();
-
-                ArrayList<String> ingredients = manager.splitList(ingredientsTextArea.toString());
-
-                ArrayList<String> instructions = manager.splitList(instructionsTextArea.toString());
+                ArrayList<String> ingredients = manager.splitString(ingredientsTextArea.toString());
+                ArrayList<String> instructions = manager.splitString(instructionsTextArea.toString());
 
                 Recipe recipe = new Recipe(recipeName, categoryName, ingredients, instructions);
                 System.out.println(recipe);
-                manager.save(recipe);
+                manager.saveRecipe(recipe);
             }
         }
         else if("Load".equals(e.getActionCommand())) { //Load button was pressed
@@ -199,8 +184,10 @@ public class RecipePanel extends JPanel implements ActionListener {
             else {
                 statusBar.setMessageColor(Color.WHITE);
                 statusBar.setMessage("Load button pressed");
-                manager.load(recipesComboBox.getSelectedIndex());
+                manager.loadRecipe(recipesComboBox.getSelectedItem());
             }
+
+            manager.loadRecipeList();
         }
         else if("Delete".equals(e.getActionCommand())) { //Delete button was pressed
 
@@ -220,6 +207,50 @@ public class RecipePanel extends JPanel implements ActionListener {
             statusBar.setMessage("Opening Recipe Index...");
             manager.openIndex(statusBar);
         }
+    }
+
+    //Checks user input when they try to save a recipe,
+    //making sure that no illegal characters are in any
+    //editable area
+    //Returns true if the input passes; false if the input fails
+    private boolean inputPassesCheck() {
+        if(recipeTextField.toString().contains("|") || recipeTextField.toString().contains("\\") || recipeTextField.toString().contains("/") || recipeTextField.toString().contains(":") || recipeTextField.toString().contains("*") || recipeTextField.toString().contains("?") || recipeTextField.toString().contains("\"") || recipeTextField.toString().contains("<") || recipeTextField.toString().contains(">")) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("Illegal input (|, \\, /, :, *, ?, \", <, and/or >) detected in recipe text field, please remove any of these characters from your input to save.");
+            return false;
+        }
+        else if(ingredientsTextArea.toString().contains("|")) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("Illegal input | detected in ingredients text area, please remove any | characters from your input to save.");
+            return false;
+        }
+        else if(instructionsTextArea.toString().contains("|")) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("Illegal input | detected in instructions text area, please remove any | characters from your input to save.");
+            return false;
+        }
+        else if(recipeTextField.toString().trim().length() == 0) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("The recipe name must have at least one character to save the recipe.");
+            return false;
+        }
+        else if(ingredientsTextArea.toString().trim().length() == 0) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("The ingredients list must have at least one character to save the recipe.");
+            return false;
+        }
+        else if(instructionsTextArea.toString().trim().length() == 0) {
+            statusBar.setMessageColor(Color.RED);
+            statusBar.setMessage("The instructions list must have at least one character to save the recipe.");
+            return false;
+        }
+        return true;
+    }
+
+    //Loads the recipe list for users to look through their created recipes
+    private void loadRecipeList() {
+        TreeMap<String, Recipe> recipeList = manager.loadRecipeList();
+        recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
     }
 
 }
