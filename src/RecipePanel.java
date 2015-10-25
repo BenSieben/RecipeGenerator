@@ -166,12 +166,12 @@ public class RecipePanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if("Save".equals(e.getActionCommand())) { //Save button was pressed
-            statusBar.setMessageColor(Color.WHITE);
-            statusBar.setMessage("Save button pressed");
 
             //Making sure no illegal characters have been given as input for any part of the recipe,
             //as they would break the saving method implemented by this program
            if(inputPassesCheck()) { //No illegal characters present, so we can save
+               statusBar.setMessageColor(Color.WHITE);
+               statusBar.setMessage("Saving " + recipeTextField.toString() + " recipe, please wait...");
                 String recipeName = recipeTextField.toString();
                 String categoryName = categoryComboBox.getSelectedItem();
                 String description = descriptionTextField.toString();
@@ -182,34 +182,37 @@ public class RecipePanel extends JPanel implements ActionListener {
                 System.out.println(recipe);
                 manager.saveRecipe(recipe);
                updateRecipeList(); //Need to update the recipe list with the recipe that was just saved
+               statusBar.setMessage("Save completed");
             }
         }
         else if("Load".equals(e.getActionCommand())) { //Load button was pressed
 
             //Make sure that a recipe has been selected for loading
-            if(recipesComboBox.getSelectedIndex() == 0) {
+            if(recipesComboBox.getOptions().length == 0) {
                 statusBar.setMessageColor(Color.RED);
-                statusBar.setMessage("Please choose a recipe to load from the \"Select Created Recipe\" dropdown.");
+                statusBar.setMessage("You must have at least one recipe saved to load a recipe.");
             }
             else {
                 statusBar.setMessageColor(Color.WHITE);
-                statusBar.setMessage("Load button pressed");
-                manager.loadRecipe(recipesComboBox.getSelectedItem(), recipeTextField, recipesComboBox, descriptionTextField, ingredientsTextArea, instructionsTextArea);
+                statusBar.setMessage("Loading " + recipesComboBox.getSelectedItem() + " recipe, please wait...");
+                manager.loadRecipe(recipesComboBox.getSelectedItem(), recipeTextField, categoryComboBox, descriptionTextField, ingredientsTextArea, instructionsTextArea);
+                statusBar.setMessage("Recipe load completed");
             }
 
-            manager.loadRecipeList();
         }
         else if("Delete".equals(e.getActionCommand())) { //Delete button was pressed
 
             //Make sure that a recipe has been selected for deletion
-            if(recipesComboBox.getSelectedIndex() == 0) {
+            if(recipesComboBox.getOptions().length == 0) {
                 statusBar.setMessageColor(Color.RED);
-                statusBar.setMessage("Please choose a recipe to delete from the \"Select Created Recipe\" dropdown.");
+                statusBar.setMessage("You must have at least one recipe saved to delete a recipe.");
             }
             else {
                 statusBar.setMessageColor(Color.WHITE);
-                statusBar.setMessage("Delete button pressed");
-                manager.delete(recipesComboBox.getSelectedIndex());
+                statusBar.setMessage("Deleting " + recipesComboBox.getSelectedItem() + " recipe, please wait...");
+                manager.delete(recipesComboBox.getSelectedItem());
+                updateRecipeList(); //need to update the recipe list without the recipe that was just deleted
+                statusBar.setMessage("Recipe deletion completed");
             }
         }
         else if("OpenIndex".equals(e.getActionCommand())) { //OpenIndex button was pressed

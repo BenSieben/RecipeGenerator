@@ -73,6 +73,14 @@ public class RecipeComboBox extends JPanel {
     }
 
     /**
+     * Returns the current array of options for the RecipeComboBox
+     * @return the current array of options for the RecipeComboBox
+     */
+    public String[] getOptions() {
+        return options;
+    }
+
+    /**
      * Sets the RecipeComboBox to choose the entry in the
      * RecipeComboBox that equals the given selectionText
      * @param selectionText the text to make the RecipeComboBox select

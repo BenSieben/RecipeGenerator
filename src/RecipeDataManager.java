@@ -41,13 +41,13 @@ public class RecipeDataManager {
      * @param recipe the Recipe of the current input in the program
      */
     public void saveRecipe(Recipe recipe) {
-        recipeList.put(recipe.getRecipeName(), recipe);
-        saveRecipeList();
-        addHTMLFiles(recipe);
+        recipeList.put(recipe.getRecipeName(), recipe); //add recipe to TreeMap
+        saveRecipeList(); //save the file containing all recipes
+        addHTMLFiles(recipe); //edit HTML files so user can use the saved recipe
     }
 
 
-    //Ads to the recipe HTML files to show the recently saved recipe
+    //Adds to the recipe HTML files to include the recently saved recipe
     private void addHTMLFiles(Recipe recipe) {
         //Read the template file to get the skeleton HTML as a String
         String HTMLContents = "";
@@ -64,18 +64,91 @@ public class RecipeDataManager {
 
         System.out.println(HTMLContents);
 
-        //TODO add to the HTML files
-        //Write the recipe's HTML file
-        /*
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter("recipes/" + recipe.getRecipeName() + ".html"))) {
+        //Edit HTMLContents file to input all the recipe data in the placeholder spots
+        HTMLContents = HTMLContents.replaceAll("<!--recipeName-->",recipe.getRecipeName());
+        HTMLContents = HTMLContents.replaceFirst("<!--recipeCategory-->",recipe.getRecipeCategory());
+        HTMLContents = HTMLContents.replaceFirst("<!--recipeDescription-->",recipe.getRecipeDescription());
+        String ingredients = "";
+        for(int i = 0; i < recipe.getRecipeIngredients().size(); i++) {
+            ingredients += ("\t\t\t\t<li>" + recipe.getRecipeIngredients().get(i) + "</li>\n");
+        }
+        HTMLContents = HTMLContents.replaceFirst("<!--recipeIngredients-->",ingredients);
+        String instructions = "";
+        for(int i = 0; i < recipe.getRecipeInstructions().size(); i++) {
+            instructions += ("\t\t\t\t<li>" + recipe.getRecipeInstructions().get(i) + "</li>\n");
+        }
+        HTMLContents = HTMLContents.replaceFirst("<!--recipeInstructions-->",instructions);
 
+        //We wait to write the recipe's HTML file until later in case the recipe HTML file gets deleted by delete() method
+
+
+        //Read the recipe index HTML file
+        String indexContents = "";
+        try(BufferedReader br = new BufferedReader(new FileReader("RecipeGeneratorIndex.html"))) {
+            String currentLine = "";
+            while (currentLine != null) {
+                currentLine = br.readLine();
+                if(currentLine != null) indexContents += currentLine;
+            }
         }
         catch(Exception ex) {
             ex.printStackTrace();
         }
-        */
 
-        //Write the recipe as an entry in the recipe index HTML file
+        System.out.println(indexContents);
+
+        //Edit the recipe index HTML file to include the recipe (or overwrite an older version of a recipe)
+        String recipeRowHTML = generateRecipeRowHTML(recipe);
+
+        if(indexContents.indexOf(recipe.getRecipeName()) != -1) { //the recipe is not new, so we must delete the old one first
+            indexContents = delete(recipe.getRecipeName());
+        }
+        //add the recipe to the HTML
+        indexContents = addIndexContents(indexContents, recipeRowHTML);
+
+
+        //Write the recipe HTML file
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("recipes/" + recipe.getRecipeName() + ".html"))) {
+            bw.write(HTMLContents);
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        //Write the recipe index HTML file
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("RecipeGeneratorIndex.html"))) {
+            bw.write(indexContents);
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Generates the HTML for adding the input Recipe as a table row in the recipe index
+     * @param recipe the Recipe to be deleted
+     * @return the HTML to create a table row for the input Recipe
+     */
+    private String generateRecipeRowHTML(Recipe recipe) {
+        String recipeRowHTML = ("\t\t\t\t<tr><td><a href=\"recipes/" + recipe.getRecipeName() + ".html\">");
+        recipeRowHTML += (recipe.getRecipeName() + "</a></td>");
+        recipeRowHTML += ("<td>" + recipe.getRecipeCategory() + "</td>");
+        recipeRowHTML += ("<td>" + recipe.getRecipeDescription() + "</td></tr>\n");
+        return recipeRowHTML;
+    }
+
+    /**
+     * Adds the recipeRowHTML to the HTML loaded in the String indexContents
+     * @param indexContents the original contents of the index HTML file
+     * @param recipeRowHTML the HTML of the recipe to be added as a row in the index HTML file
+     * @return
+     */
+    private String addIndexContents(String indexContents, String recipeRowHTML) {
+        int newIndexContentsFirstHalfEnd = indexContents.indexOf("<!--recipeIndexEntry-->") + "<!--recipeIndexEntry-->".length();
+        String newIndexContentsFirstHalf = (indexContents.substring(0, newIndexContentsFirstHalfEnd) + "\n");
+        newIndexContentsFirstHalf += recipeRowHTML;
+        String newIndexContentsSecondHalf = (indexContents.substring(newIndexContentsFirstHalfEnd));
+        return (newIndexContentsFirstHalf + newIndexContentsSecondHalf);
     }
 
     /**
@@ -149,6 +222,7 @@ public class RecipeDataManager {
         recipeTextField.setText(recipe.getRecipeName());
 
         categoryComboBox.setSelectedItem(recipe.getRecipeCategory());
+        System.out.println("Setting recipe category to " + recipe.getRecipeCategory());
 
         descriptionTextField.setText(recipe.getRecipeDescription());
 
@@ -171,8 +245,51 @@ public class RecipeDataManager {
         instructionsArea.setText(spacedInstructions);
     }
 
-    public void delete(int index) {
+    /**
+     * Deletes the input recipe from both the index and the recipe's HTML file
+     * @param recipeName the name of the recipe to be deleted (from both recipe index and the recipe's HTML file)
+     * @return the new HTML contents of the recipe index file with the input Recipe removed
+     */
+    public String delete(String recipeName) {
+        //Delete the recipe from the recipes TreeMap that contains all recipes
+        recipeList.remove(recipeName);
 
+        //Delete the HTML file of the recipe
+        File fileToDelete = new File("recipes/" + recipeName + ".html");
+        fileToDelete.delete();
+
+        //Generate new index HTML with all the row HTML files for all recipes in the recipes TreeMap as String
+        String recipeRowHTMLs = "";
+        for(String recipeListRecipe: recipeList.keySet()) {
+            recipeRowHTMLs += generateRecipeRowHTML(recipeList.get(recipeListRecipe));
+        }
+        String indexContents = "";
+        try(BufferedReader br = new BufferedReader(new FileReader("RecipeGeneratorIndex_original.html"))) {
+            String currentLine = "";
+            while (currentLine != null) {
+                currentLine = br.readLine();
+                if(currentLine != null) indexContents += currentLine;
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        indexContents = addIndexContents(indexContents, recipeRowHTMLs);
+
+        //Save the new recipe index HTML
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("RecipeGeneratorIndex.html"))) {
+            bw.write(indexContents);
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        //Save the new TreeMap data without the deleted recipe to the save file
+        saveRecipeList();
+
+        //Write the String that contains the new Index HTML to th index HTML file
+        return indexContents;
     }
 
     /**
