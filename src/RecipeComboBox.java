@@ -64,6 +64,11 @@ public class RecipeComboBox extends JPanel {
         add(comboBox, BorderLayout.CENTER);
     }
 
+    /**
+     * Updates the RecipeComboBox to list everything in the input TreeMap by setting the
+     * DefaultComboBoModel
+     * @param recipeList the list of all recipes to display in the RecipeComboBox
+     */
     public void update(TreeMap<String, Recipe> recipeList) {
         this.options = new String[recipeList.size()];
         int index = 0;
@@ -76,6 +81,10 @@ public class RecipeComboBox extends JPanel {
         comboBox.setModel(defaultComboBoxModel);
     }
 
+    /**
+     * Returns a String of all the items listed in the RecipeComboBox
+     * @return a String of all the items listed in the RecipeComboBox
+     */
     public String toString() {
         String output = "";
         for(String choice: options) {

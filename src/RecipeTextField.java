@@ -10,6 +10,12 @@ public class RecipeTextField extends JPanel {
     private JLabel label;
     private JTextField textField;
 
+    /**
+     * Creates a new RecipeTextField to display a text field
+     * in the RecipePanel
+     * @param labelText the name of what the user should input in the text field
+     * @param toolTipText the tool tip associated with the text field
+     */
     public RecipeTextField(String labelText, String toolTipText) {
         textField = new JTextField();
         textField.setEditable(true);
@@ -32,6 +38,10 @@ public class RecipeTextField extends JPanel {
         add(textField, BorderLayout.CENTER);
     }
 
+    /**
+     * Returns the current contents of the RecipeTextField
+     * @return the current contents of the RecipeTextField
+     */
     public String toString() {
         return textField.getText();
     }

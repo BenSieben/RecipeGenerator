@@ -8,6 +8,15 @@ public class Recipe {
     private String recipeName, recipeCategory, recipeDescription;
     private ArrayList<String> recipeIngredients, recipeInstructions;
 
+
+    /**
+     * Creates a new recipe
+     * @param name the name of the recipe
+     * @param category the category of the recipe (such as appetizer or pie)
+     * @param description a description of the recipe in a sentence or less
+     * @param ingredients the list of ingredients needed for the recipe
+     * @param instructions the list of instructions needed for the recipe
+     */
     public Recipe(String name, String category, String description, ArrayList<String> ingredients, ArrayList<String> instructions) {
         recipeName = name;
         recipeCategory = category;

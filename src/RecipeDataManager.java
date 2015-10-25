@@ -62,8 +62,6 @@ public class RecipeDataManager {
             ex.printStackTrace();
         }
 
-        System.out.println(HTMLContents);
-
         //Edit HTMLContents file to input all the recipe data in the placeholder spots
         HTMLContents = HTMLContents.replaceAll("<!--recipeName-->",recipe.getRecipeName());
         HTMLContents = HTMLContents.replaceFirst("<!--recipeCategory-->",recipe.getRecipeCategory());
@@ -94,8 +92,6 @@ public class RecipeDataManager {
         catch(Exception ex) {
             ex.printStackTrace();
         }
-
-        System.out.println(indexContents);
 
         //Edit the recipe index HTML file to include the recipe (or overwrite an older version of a recipe)
         String recipeRowHTML = generateRecipeRowHTML(recipe);
@@ -176,7 +172,6 @@ public class RecipeDataManager {
 
         // go through each line in the file to load all the recipes
         for(String line : data) {
-            System.out.println("recipe: " + line);
 
             // split lines on ||
             String[] lineArr = line.split("\\|\\|");
@@ -194,7 +189,6 @@ public class RecipeDataManager {
             ArrayList<String> instructionsAL = new ArrayList<>(Arrays.asList(instructions));
 
             Recipe recipe = new Recipe(recipeName, recipeCategory, recipeDescription, ingredientsAL, instructionsAL);
-            System.out.println("recipe: " + recipe);
 
             recipeList.put(recipeName, recipe);
         }
@@ -222,7 +216,6 @@ public class RecipeDataManager {
         recipeTextField.setText(recipe.getRecipeName());
 
         categoryComboBox.setSelectedItem(recipe.getRecipeCategory());
-        System.out.println("Setting recipe category to " + recipe.getRecipeCategory());
 
         descriptionTextField.setText(recipe.getRecipeDescription());
 

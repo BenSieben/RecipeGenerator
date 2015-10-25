@@ -16,6 +16,10 @@ public class RecipePanel extends JPanel implements ActionListener {
     private RecipeTextArea ingredientsTextArea, instructionsTextArea;
     private RecipeStatusBar statusBar;
 
+    /**
+     * Creates a new RecipePanel, which contains all components of the
+     * recipe generator needed for user usage
+     */
     public RecipePanel() {
         //this.setBackground(new Color(0, 52, 52));
 
@@ -165,6 +169,12 @@ public class RecipePanel extends JPanel implements ActionListener {
         return categoryOptions;
     }
 
+    /**
+     * Activates whenever an ActionEvent is detected by one
+     * of the RecipePanel's JButtons present, which can be
+     * examined to determine what action to take
+     * @param e the ActionEvent that was detected
+     */
     public void actionPerformed(ActionEvent e) {
         if("Save".equals(e.getActionCommand())) { //Save button was pressed
 
