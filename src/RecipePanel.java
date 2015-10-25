@@ -20,7 +20,8 @@ public class RecipePanel extends JPanel implements ActionListener {
         //this.setBackground(new Color(0, 52, 52));
 
         manager = new RecipeDataManager();
-        loadRecipeList(); //Loads the last saved recipe list to the recipesComboBox
+        TreeMap<String, Recipe> recipeList = manager.loadRecipeList();
+        recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -270,16 +271,13 @@ public class RecipePanel extends JPanel implements ActionListener {
         return true;
     }
 
-    //Loads the recipe list for users to look through their created recipes
-    private void loadRecipeList() {
-        TreeMap<String, Recipe> recipeList = manager.loadRecipeList();
-        recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
-    }
-
     //Updates the recipe list for users to look through their created recipes
     private void updateRecipeList() {
         TreeMap<String, Recipe> recipeList = manager.getRecipeList();
-        recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
+        recipesComboBox.update(recipeList);
+        recipesComboBox.revalidate();
+        recipesComboBox.repaint();
+        //recipesComboBox = new RecipeComboBox("Select Created Recipe",recipeList,"Select a recipe to load or delete from this dropdown.");
     }
 
 }

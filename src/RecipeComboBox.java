@@ -64,6 +64,18 @@ public class RecipeComboBox extends JPanel {
         add(comboBox, BorderLayout.CENTER);
     }
 
+    public void update(TreeMap<String, Recipe> recipeList) {
+        this.options = new String[recipeList.size()];
+        int index = 0;
+        for(String recipe: recipeList.keySet()) {
+            options[index] = recipe;
+            index ++;
+        }
+
+        DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<>(options);
+        comboBox.setModel(defaultComboBoxModel);
+    }
+
     public String toString() {
         String output = "";
         for(String choice: options) {
