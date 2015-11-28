@@ -6,7 +6,7 @@ This program requires the Java JRE. It can be obtained at https://java.com/en/do
 
 Using the RecipeGenerator program is fairly simple. Below are instructions on how to perform common tasks with the program.
 Always run the program through the .jar file and do not edit other files, as it can cause the program to fail.
-WARNING: pressing buttons instantly performs the task described in the buttons' text; only perform actions you are 100% sure you wish to perform
+WARNING: pressing any button instantly performs the task described in the button's text; only perform actions you are 100% sure you wish to perform
 
 1) Saving recipes
 	To save recipes, launch the "RecipeGenerator.jar" file and input the recipe name / category / description / ingredients / instructions into the appropriate fields in the program
