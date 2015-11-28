@@ -18,7 +18,7 @@ public class RecipeStatusBar extends JPanel{
     public RecipeStatusBar(String message) {
         setLayout(new BorderLayout());
 
-        this.message = new JLabel();
+        this.message = new JLabel(message);
         this.message.setOpaque(true);
         //this.message.setBackground(new Color(0, 0, 0));
         this.message.setHorizontalAlignment(SwingConstants.CENTER); //Centers the message

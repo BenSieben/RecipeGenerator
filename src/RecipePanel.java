@@ -176,13 +176,15 @@ public class RecipePanel extends JPanel implements ActionListener {
      * @param e the ActionEvent that was detected
      */
     public void actionPerformed(ActionEvent e) {
+        String modifiedRecipe;
         if("Save".equals(e.getActionCommand())) { //Save button was pressed
 
             //Making sure no illegal characters have been given as input for any part of the recipe,
             //as they would break the saving method implemented by this program
            if(inputPassesCheck()) { //No illegal characters present, so we can save
+               modifiedRecipe = recipeTextField.toString();
                statusBar.setMessageColor(Color.WHITE);
-               statusBar.setMessage("Saving " + recipeTextField.toString() + " recipe, please wait...");
+               statusBar.setMessage("Saving \"" + modifiedRecipe + "\" recipe, please wait...");
                 String recipeName = recipeTextField.toString();
                 String categoryName = categoryComboBox.getSelectedItem();
                 String description = descriptionTextField.toString();
@@ -193,7 +195,7 @@ public class RecipePanel extends JPanel implements ActionListener {
                 System.out.println(recipe);
                 manager.saveRecipe(recipe);
                updateRecipeList(); //Need to update the recipe list with the recipe that was just saved
-               statusBar.setMessage("Save completed");
+               statusBar.setMessage("Recipe \"" +  modifiedRecipe + "\" successfully saved.");
             }
         }
         else if("Load".equals(e.getActionCommand())) { //Load button was pressed
@@ -204,10 +206,11 @@ public class RecipePanel extends JPanel implements ActionListener {
                 statusBar.setMessage("You must have at least one recipe saved to load a recipe.");
             }
             else {
+                modifiedRecipe = recipesComboBox.getSelectedItem();
                 statusBar.setMessageColor(Color.WHITE);
-                statusBar.setMessage("Loading " + recipesComboBox.getSelectedItem() + " recipe, please wait...");
-                manager.loadRecipe(recipesComboBox.getSelectedItem(), recipeTextField, categoryComboBox, descriptionTextField, ingredientsTextArea, instructionsTextArea);
-                statusBar.setMessage("Recipe load completed");
+                statusBar.setMessage("Loading \"" + modifiedRecipe + "\" recipe, please wait...");
+                manager.loadRecipe(modifiedRecipe, recipeTextField, categoryComboBox, descriptionTextField, ingredientsTextArea, instructionsTextArea);
+                statusBar.setMessage("Recipe \"" +  modifiedRecipe + "\" successfully loaded.");
             }
 
         }
@@ -219,11 +222,12 @@ public class RecipePanel extends JPanel implements ActionListener {
                 statusBar.setMessage("You must have at least one recipe saved to delete a recipe.");
             }
             else {
+                modifiedRecipe = recipesComboBox.getSelectedItem();
                 statusBar.setMessageColor(Color.WHITE);
-                statusBar.setMessage("Deleting " + recipesComboBox.getSelectedItem() + " recipe, please wait...");
-                manager.delete(recipesComboBox.getSelectedItem());
+                statusBar.setMessage("Deleting \"" + modifiedRecipe + "\" recipe, please wait...");
+                manager.delete(modifiedRecipe);
                 updateRecipeList(); //need to update the recipe list without the recipe that was just deleted
-                statusBar.setMessage("Recipe deletion completed");
+                statusBar.setMessage("Recipe \"" +  modifiedRecipe + "\" has been deleted.");
             }
         }
         else if("OpenIndex".equals(e.getActionCommand())) { //OpenIndex button was pressed
