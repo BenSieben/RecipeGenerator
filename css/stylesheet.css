@@ -1,28 +1,57 @@
 body {
     background: #003434;
+    margin: 0;
+    padding: 0 0 0 0;
+}
+
+a {
+    color: #DADADA;
 }
 
 div {
     display: block;
     background: #194848;
-    margin: 2em 2em 2em 2em;
+}
+
+h1 {
+    margin: 0 0 0 0;
+    padding: 0em 0em 0em 0em;
+}
+
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin: 0em 1.5em 0em 1em;
+}
+
+ol, ul {
+    margin: 1em 0em 1em 0em;
+    padding: 1em;
+}
+
+p {
+    margin: 1em 1em 1em 1em;
 }
 
 table, th, td {
-    border: 2px solid #DADADA;
-    padding: 1em;
-    border-collapse: collapse;
     color: #FFFFFF;
+    border-spacing: 0;
 }
 
 table {
-    margin: 0px auto;
+    margin: 0em auto;
+    padding: 2em 0em 2em 0em;
+    width: 95%;
 }
 
 th {
     font-size: 1.2em;
     background-color: #55D5FF;
     cursor: pointer;
+    border: 2px solid #FFFFFF;
 }
 
 th:hover {
@@ -32,6 +61,7 @@ th:hover {
 
 td {
     font-size: 1em;
+    border: 2px solid #FFFFFF;
 }
 
 tbody tr{
@@ -45,7 +75,6 @@ tbody tr:nth-child(odd) {
 td a {
     color: #FFFFFF;
 }
-
 
 .textdiv {
     //width: 9em;
@@ -63,9 +92,10 @@ td a {
     color: #FFFFFF;
     text-align: center;
     background: #0d5f77;
-    margin: 0em 2em -1em 2em;
+    margin: 0 auto;
     font-size: 2em;
     font-family: sans-serif;
+    padding: 0;
 }
 
 .subtitle {
@@ -74,12 +104,14 @@ td a {
     font-size: 1.7em;
     font-family: sans-serif;
     background: #398190;
+    margin: 0.3em;
 }
 
 .list {
     color: #FFFFFF;
     font-size: 1em;
     font-family: sans-serif;
+    //margin: 1em 1em 1em 1em;
 }
 
 .recipeentry {
@@ -89,12 +121,13 @@ td a {
 .centerdiv {
     text-align: center;
     background: #0CA3C2;
+    //margin: 1em 1em 1em 1em;
 }
 
 #indexlink {
-    color: #DADADA;
     text-align: center;
     font-size: 1.3em;
+    margin: 0;
 }
 
 #pcategory {
